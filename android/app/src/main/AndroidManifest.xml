@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.puckjs_app">
    <application
-        android:label="puckjs_app"
+        android:label="PanicPal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
