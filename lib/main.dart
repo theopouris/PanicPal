@@ -3,6 +3,8 @@ import 'settings.dart';
 //import 'reminders.dart';
 import 'testrem.dart';
 import 'contacts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() {
   runApp(const PanicButtonApp());
@@ -11,18 +13,25 @@ void main() {
 class PanicButtonApp extends StatelessWidget {
   const PanicButtonApp({super.key});
 
-  @override
+    @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PanicPal',
-      theme: ThemeData(
-        primaryColor: const Color(0xFF2C3D7A),
-        scaffoldBackgroundColor: const Color(0xFF2C3D7A),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1D1A22),
-        ),
-      ),
-      home: const HomePage(),
+    return ScreenUtilInit(
+      designSize: const Size(360, 640),
+      builder: (BuildContext context, Widget? child) {
+        // Initialize the screen util
+      
+        return MaterialApp(
+          title: 'PanicPal',
+          theme: ThemeData(
+            primaryColor: const Color(0xFF2C3D7A),
+            scaffoldBackgroundColor: const Color(0xFF2C3D7A),
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color(0xFF1D1A22),
+            ),
+          ),
+          home: const HomePage(),
+        );
+      },
     );
   }
 }

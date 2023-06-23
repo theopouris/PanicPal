@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'create_contacts.dart';
 import 'mongodb.dart';
+import 'create_contacts.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +40,7 @@ class ContactPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            Navigator.pop(context);
             // Handle going to previous page
           },
         ),
@@ -47,11 +48,10 @@ class ContactPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              Navigator.push(
-                  //this navigates to the screen after pressing the button
-                  context,
-                  MaterialPageRoute(
-                      builder: (builder) => const CreateContact()));
+              Navigator.push( //this navigates to the screen after pressing the button
+                              context,
+                              MaterialPageRoute(
+                                  builder: (builder) => const CreateContact()));
             },
           ),
         ],
@@ -72,9 +72,7 @@ class ContactPage extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(10.sp, 40.sp, 30.sp, 40.sp),
                   child: Text(
                     'Select your emergency contacts',
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        color: const Color.fromARGB(255, 230, 224, 233)),
+                    style: TextStyle(fontSize: 18.sp, color:const Color.fromARGB(255, 230, 224, 233)),
                   ),
                 ),
                 Expanded(
@@ -88,8 +86,7 @@ class ContactPage extends StatelessWidget {
                         final firstName = contact['first_name'] ?? '';
                         final lastName = contact['last_name'] ?? '';
                         final fullName = '$firstName $lastName';
-                        final firstLetter =
-                            fullName.isNotEmpty ? fullName[0] : '';
+                        final firstLetter = fullName.isNotEmpty ? fullName[0] : '';
 
                         return Dismissible(
                           key: UniqueKey(),
@@ -112,14 +109,12 @@ class ContactPage extends StatelessWidget {
                               backgroundColor: const Color(0xFF2C3D7A),
                               child: Text(
                                 firstLetter.toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: const Color(0xFFEADDFF)),
+                                style: TextStyle(fontSize: 16.sp, color: const Color(0xFFEADDFF)),
                               ),
                             ),
                             title: Text(
                               fullName,
-                              style: TextStyle(
+                              style:  TextStyle(
                                 color: const Color.fromARGB(255, 230, 224, 233),
                                 fontSize: 18.sp,
                               ),

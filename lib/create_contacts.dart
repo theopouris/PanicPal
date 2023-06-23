@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'mongodb.dart';
+import 'contacts.dart';
 
 class CreateContact extends StatefulWidget {
   const CreateContact({Key? key}) : super(key: key);
 
   @override
-  _CreateContactState createState() => _CreateContactState();
+  CreateContactState createState() => CreateContactState();
 }
 
-class _CreateContactState extends State<CreateContact> {
+class CreateContactState extends State<CreateContact> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
@@ -27,7 +28,10 @@ class _CreateContactState extends State<CreateContact> {
 
     // Close the page and pop back to the previous one
     // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
+    Navigator.of(context).push(//this navigates to the screen after pressing the button
+                             
+                              MaterialPageRoute(
+                                  builder: (builder) => const ContactPage()));
   }
 
   @override
