@@ -38,4 +38,17 @@ class MongoDatabase {
 
     await db.close();
   }
+  
+  static Future<Map<String, dynamic>> fetchContactById(String contactId) async {
+    var db = await Db.create(
+        "mongodb+srv://omada18:Infinity!2@cluster0.w7a3ozp.mongodb.net/contacts");
+    await db.open();
+    var collection = db.collection("contacts");
+    
+    final contact = await collection.findOne(where.eq("_id", contactId));
+
+    await db.close();
+
+    return contact ?? {}; // Return an empty map if no contact is found
+  }
 }
