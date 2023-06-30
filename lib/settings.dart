@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puckjs_app/one_tap.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -35,6 +36,10 @@ class SettingsScreen extends StatelessWidget {
                 RoundedOptionButton(
                   text: 'Single tap',
                   onPressed: () {
+                    Navigator.push( //this navigates to the screen after pressing the button
+                              context,
+                              MaterialPageRoute(
+                                  builder: (builder) => const Onetap()));
                     // TODO: Handle single tap functionality
                   },
                 ),
