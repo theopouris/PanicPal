@@ -4,6 +4,10 @@ import 'settings.dart';
 import 'testrem.dart';
 import 'contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'one_tap.dart';
+import 'dart:io';
+import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 
 void main() {
@@ -40,15 +44,16 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
+  int tapCount = 0; // Variable to track the number of taps\
+    
 
-  @override
   void initState() {
     super.initState();
 
@@ -64,15 +69,48 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  @override
+
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
 
+  callEmergencyNumber() async{
+    const number = '112'; //set the number here
+    await FlutterPhoneDirectCaller.callNumber(number);
+  }
+
+
   void _handleButtonPress() {
     // Print a message to the console
-    print('SOS button pressed!');
+      setState(() {
+      tapCount++; // Increment the tap count on each button press
+      
+    });
+
+    // Implement different functionalities based on the number of taps
+    if (tapCount == 1) {
+      // Handle single tap functionality
+      if (sendAutomatedMessage) {
+        sendMessageFromAutomatedMessage();
+      } else if (callSpecificContact) {
+        // Perform action for single tap with another condition
+      } else if (callEmergencyServices) {
+          callEmergencyNumber();
+        // Default action for single tap
+      }
+    } else if (tapCount == 2) {
+      // Handle double tap functionality
+      // Perform action for double tap
+    } else {
+      // Handle continuous tap functionality
+      // Perform action for continuous tap
+    }
+
+    // Print a message to the console
+    setState(() {
+      tapCount++; // Increment the tap count on each button press
+    });
   }
 
   void _openDrawer(BuildContext context) {
@@ -80,7 +118,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void _navigateToSettings(BuildContext context) {
-    Navigator.pop(context); // Close the drawer
+   // Navigator.pop(context); // Close the drawer
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SettingsScreen()),
@@ -88,7 +126,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void _navigateToReminders(BuildContext context) {
-    Navigator.pop(context); // Close the drawer
+   // Navigator.pop(context); // Close the drawer
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -96,6 +134,31 @@ class _HomePageState extends State<HomePage>
                 reminders: [],
               )),
     );
+  }
+
+  Future<void> sendMessageFromAutomatedMessage() async {
+    // Get the directory path
+    String directoryPath = '${Directory.current.path}/path/to/directory';
+
+    // Construct the file path
+    String filePath = '$directoryPath/automatedmessage.txt';
+
+    // Read the contents of the file
+    File file = File(filePath);
+    List<String> lines = file.readAsLinesSync();
+
+    // Check if the file has at least two lines
+    if (lines.length >= 2) {
+      String message = lines[0]; // Get the message from the first line
+      String recipents = lines[1]; // Get the phone number from the second line
+
+      // Send the message to the phone number
+      // Add your code here to send the message using your preferred method (e.g., SMS, API)
+   
+
+    String result = await sendSMS(message: message, recipients: [recipents], sendDirect: true);
+    print(result);
+    }
   }
 
   void _navigateToContacts(BuildContext context) {
@@ -155,7 +218,34 @@ class _HomePageState extends State<HomePage>
       },
     );
   }
+  
 
+  
+
+  // Rest the tap count if needed
+  void _resetTapCount() {
+    setState(() {
+      tapCount = 0;
+    });
+  }
+
+  // Rest the tap count after a delay if needed
+  void _resetTapCountWithDelay() {
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        tapCount = 0;
+      });
+    });
+  }
+
+  // Rest the tap count after a certain number of taps if needed
+  void _resetTapCountAfterNTaps(int n) {
+    if (tapCount >= n) {
+      setState(() {
+        tapCount = 0;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -315,3 +405,4 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
+

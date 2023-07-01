@@ -5,6 +5,10 @@ import 'package:puckjs_app/add_text.dart';
 import 'package:puckjs_app/settings.dart';
 import 'select_contact_2.dart';
 
+  bool sendAutomatedMessage = false;
+  bool callSpecificContact = false;
+  bool callEmergencyServices = false;
+  String emergency_services = '112';
 
 class Onetap extends StatefulWidget {
   const Onetap({Key? key}) : super(key: key);
@@ -24,10 +28,7 @@ class OnetapState extends State<Onetap> {
     return file.writeAsString(text);
   }
 
-  bool sendAutomatedMessage = false;
-  bool callSpecificContact = false;
-  bool callEmergencyServices = false;
-  String emergency_services = '112';
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,17 +156,12 @@ class OnetapState extends State<Onetap> {
                   splashRadius: 35.0,
                   value: callEmergencyServices,
                   onChanged: (value) {
-                    setState(() async {
+                    setState(()  {
                       if (value) {
                         sendAutomatedMessage = false;
                         callSpecificContact = false;
                         callEmergencyServices = true;
                       // write the emergency number in the file
-                      final directory = await getApplicationDocumentsDirectory();
-                            final filePath = '${directory.path}/emergencyservices.txt';
-                            await createFile(filePath);
-                            await writeToFile(emergency_services, filePath);
-
                       } else {
                         callEmergencyServices = false;
                       }
