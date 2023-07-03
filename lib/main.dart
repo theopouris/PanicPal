@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:puckjs_app/eddystone_scanner.dart';
 import 'settings.dart';
-//import 'reminders.dart';
-import 'testrem.dart';
+import 'reminders.dart';
+//import 'testrem.dart';
 import 'contacts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'one_tap.dart';
@@ -124,14 +124,12 @@ class HomePageState extends State<HomePage>
     );
   }
 
-  void _navigateToReminders(BuildContext context) {
-   // Navigator.pop(context); // Close the drawer
+    void _navigateToReminders(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => const ReminderScreen(
-                reminders: [],
-              )),
+        builder: (context) => RemindersScreen(),
+      ),
     );
   }
 
