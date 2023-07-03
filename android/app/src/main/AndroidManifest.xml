@@ -1,5 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.puckjs_app">
+   <uses-permission android:name="android.permission.SEND_SMS"/>
+   <uses-permission android:name="android.permission.BLUETOOTH" />
+   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+   <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+   <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="smsto"/>
+        </intent>
+   </queries>
    <application
         android:label="PanicPal"
         android:name="${applicationName}"

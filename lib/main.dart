@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:puckjs_app/eddystone_scanner.dart';
 import 'settings.dart';
 //import 'reminders.dart';
 import 'testrem.dart';
@@ -8,7 +10,7 @@ import 'one_tap.dart';
 import 'dart:io';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-
+import 'dart:async';
 
 void main() {
   runApp(const PanicButtonApp());
@@ -17,13 +19,12 @@ void main() {
 class PanicButtonApp extends StatelessWidget {
   const PanicButtonApp({super.key});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 640),
       builder: (BuildContext context, Widget? child) {
         // Initialize the screen util
-      
         return MaterialApp(
           title: 'PanicPal',
           theme: ThemeData(
@@ -57,6 +58,9 @@ class HomePageState extends State<HomePage>
   void initState() {
     super.initState();
 
+    BeaconScanner scanner = BeaconScanner();
+    scanner.scanForBeacons();
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -74,12 +78,6 @@ class HomePageState extends State<HomePage>
     _animationController.dispose();
     super.dispose();
   }
-
-  callEmergencyNumber() async{
-    const number = '112'; //set the number here
-    await FlutterPhoneDirectCaller.callNumber(number);
-  }
-
 
   void _handleButtonPress() {
     // Print a message to the console
@@ -136,30 +134,6 @@ class HomePageState extends State<HomePage>
     );
   }
 
-  Future<void> sendMessageFromAutomatedMessage() async {
-    // Get the directory path
-    String directoryPath = '${Directory.current.path}/path/to/directory';
-
-    // Construct the file path
-    String filePath = '$directoryPath/automatedmessage.txt';
-
-    // Read the contents of the file
-    File file = File(filePath);
-    List<String> lines = file.readAsLinesSync();
-
-    // Check if the file has at least two lines
-    if (lines.length >= 2) {
-      String message = lines[0]; // Get the message from the first line
-      String recipents = lines[1]; // Get the phone number from the second line
-
-      // Send the message to the phone number
-      // Add your code here to send the message using your preferred method (e.g., SMS, API)
-   
-
-    String result = await sendSMS(message: message, recipients: [recipents], sendDirect: true);
-    print(result);
-    }
-  }
 
   void _navigateToContacts(BuildContext context) {
     Navigator.pop(context); // Close the drawer
@@ -218,9 +192,6 @@ class HomePageState extends State<HomePage>
       },
     );
   }
-  
-
-  
 
   // Rest the tap count if needed
   void _resetTapCount() {
@@ -406,3 +377,34 @@ class HomePageState extends State<HomePage>
   }
 }
 
+Future<void> sendMessageFromAutomatedMessage() async {
+
+    // Get the directory path
+    final directory = await getApplicationDocumentsDirectory();
+
+    // Construct the file path
+    String filePath = '${directory.path}/automatedmessage.txt';
+
+    // Read the contents of the file
+    File file = File(filePath);
+    List<String> lines = file.readAsLinesSync();
+
+    // Check if the file has at least two lines
+    if (lines.length >= 2) {
+      String message = lines[0]; // Get the message from the first line 
+      String recipents = lines[1]; // Get the phone number from the second line
+
+    // Send the message to the phone number
+      try{
+        await sendSMS(message: message, recipients: [recipents]);
+      } catch(error){
+        /*FIXME: Remove it in release version */
+        print("SMS not sent");
+      }
+    }
+  }
+
+  void callEmergencyNumber() async{
+        const number = '6987711785'; //set the number here (Efthimis)
+        await FlutterPhoneDirectCaller.callNumber(number);
+      }

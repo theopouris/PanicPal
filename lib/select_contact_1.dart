@@ -31,7 +31,7 @@ class SelectContactState extends State<SelectContactPage> {
 
   void savePhoneNumberToFile(String phoneNumber) async {
     final file = File(widget.filePath);
-    await file.writeAsString(phoneNumber);
+    await file.writeAsString("\n$phoneNumber", mode: FileMode.append);
     print('PhoneNumber saved: $phoneNumber');
   }
 
