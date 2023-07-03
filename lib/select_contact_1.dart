@@ -117,12 +117,7 @@ class SelectContactState extends State<SelectContactPage> {
               savePhoneNumberToFile(phoneNumber);
             
               if (context.mounted){
-                Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const Onetap(),
-                )
-                );
+                Navigator.pop(context);
               }
             } else {
             

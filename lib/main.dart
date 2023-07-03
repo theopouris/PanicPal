@@ -92,6 +92,7 @@ class HomePageState extends State<HomePage>
       if (sendAutomatedMessage) {
         sendMessageFromAutomatedMessage();
       } else if (callSpecificContact) {
+        callContact();
         // Perform action for single tap with another condition
       } else if (callEmergencyServices) {
           callEmergencyNumber();
@@ -376,6 +377,31 @@ class HomePageState extends State<HomePage>
     );
   }
 }
+
+Future<void> callContact() async {
+
+    final directory = await getApplicationDocumentsDirectory();
+
+    // Construct the file path
+    String filePath = '${directory.path}/callcontact.txt';
+
+      // Read the contents of the file
+    File file = File(filePath);
+    List<String> lines = file.readAsLinesSync();
+
+    // Check if the file has at least two lines
+    if (lines.isNotEmpty) {
+      String number = lines[0]; // Get the message from the first line
+      // Get the phone number from the second line
+
+      // Send the message to the phone number
+      // Add your code here to send the message using your preferred method (e.g., SMS, API)
+   
+
+    
+    await FlutterPhoneDirectCaller.callNumber(number);
+    }
+  }
 
 Future<void> sendMessageFromAutomatedMessage() async {
 

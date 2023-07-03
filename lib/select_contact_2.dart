@@ -40,9 +40,17 @@ class SelectContactState2 extends State<SelectContactPage2> {
   }
 
   void savePhoneNumberToFile(String phoneNumber, String filePath) async {
-    final file = File(filePath);
-    await file.writeAsString(phoneNumber);
-    print('PhoneNumber saved: $phoneNumber');
+      final file = File(filePath);
+      // Read the existing content of the file
+      final lines = await file.readAsLines();
+
+      // Update the second line with the phone number
+      lines[1] = phoneNumber;
+
+      // Write the updated content back to the file
+      await file.writeAsString(lines.join('\n'));
+
+      print('PhoneNumber saved: $phoneNumber');
   }
 
   @override
@@ -130,22 +138,14 @@ class SelectContactState2 extends State<SelectContactPage2> {
               savePhoneNumberToFile(phoneNumber, filePath);
             
               if (context.mounted){
-                Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const Onetap(),
-                )
-                );
+                Navigator.pop(context);
+                
               }
             } else {
             
               if (context.mounted){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const Onetap(),
-                )
-              );
+              Navigator.pop(context);
+
             }
               // Handle the case where no contact is selected
               // Display an error message or prevent further actions

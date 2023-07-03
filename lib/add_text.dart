@@ -67,6 +67,7 @@ class _AddTextPageState extends State<AddTextPage> {
                             await createFile(filePath);
                             await writeToFile(_textController.text, filePath);
                             if (context.mounted) {
+                              Navigator.pop(context);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
